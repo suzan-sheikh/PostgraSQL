@@ -3,6 +3,9 @@ import express, {
   type Request,
   type Response,
 } from "express";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 import { Pool } from "pg";
 
@@ -15,8 +18,7 @@ app.use(express.text());
 
 //DB Connection
 const pool = new Pool({
-  connectionString:
-    "postgresql://neondb_owner:npg_JmoL9ENacDf8@ep-young-mode-awjeu1km-pooler.c-12.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require",
+  connectionString:process.env.DATABASE_URL,
 });
 
 // Create Table
