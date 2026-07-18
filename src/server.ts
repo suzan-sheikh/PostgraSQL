@@ -3,7 +3,7 @@ import express, {
   type Request,
   type Response,
 } from "express";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -18,8 +18,10 @@ app.use(express.text());
 
 //DB Connection
 const pool = new Pool({
-  connectionString:process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL,
 });
+
+// "postgresql://neondb_owner:npg_JmoL9ENacDf8@ep-young-mode-awjeu1km-pooler.c-12.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 
 // Create Table
 const initDB = async () => {
@@ -173,6 +175,41 @@ app.put("/api/users/:id", async (req: Request, res: Response) => {
     });
   }
   // console.log(result);
+});
+
+//delete single user
+
+app.delete("/api/users/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const result = await pool.query(
+      `
+      DELETE FROM users WHERE id=$1
+    `,
+      [id],
+    );
+
+    if (result.rowCount === 0) {
+      res.status(404).json({
+        success: false,
+        message: "User Not Found",
+        data: {},
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User Deleted Successful",
+      data: {},
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: true,
+      message: error.message,
+      data: error,
+    });
+  }
 });
 
 app.listen(port, () => {
