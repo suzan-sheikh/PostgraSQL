@@ -6,13 +6,13 @@ import express, {
 import { initDB, pool } from "./db";
 import { userRoute } from "./modules/user/user.route";
 import { profileRoute } from "./modules/profile/profile.route";
+import { testRoute } from "./modules/test/test.route";
 
 const app: Application = express();
 
 //middleware
 app.use(express.json());
 app.use(express.text());
-
 
 //default get
 app.get("/", (req: Request, res: Response) => {
@@ -22,23 +22,15 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
-app.use('/api/users', userRoute);
-app.use('/api/profile', profileRoute)
-
-
-
+app.use("/api/users", userRoute);
+app.use("/api/profile", profileRoute);
+app.use("/api/test", testRoute)
 
 
 
 // get all Api
-
-//get Single User base on id
-
-
+// get Single User base on id
 // update user
-
-
-//delete single user
-
+// delete single user
 
 export default app;

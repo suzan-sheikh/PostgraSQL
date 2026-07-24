@@ -20,9 +20,9 @@ const createProfileIntoDB = async (payLoad: any) => {
 
     `,
     [user_id, bio, address, phone, gender],
-  );
+  ); 
 
-  return result
+  return result;
 
   console.log(user);
 };

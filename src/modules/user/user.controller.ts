@@ -2,8 +2,8 @@ import type { Request, Response } from "express";
 import { userService } from "./user.service";
 
 const createUser = async (req: Request, res: Response) => {
-  const result = await userService.createUserIntoDB(req.body);
   try {
+    const result = await userService.createUserIntoDB(req.body);
     res.status(201).json({
       success: true,
       message: "User Create Successful",

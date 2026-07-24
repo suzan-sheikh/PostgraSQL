@@ -1,16 +1,20 @@
 import { pool } from "../../db";
 import type { IUser } from "./user.interface";
+import bcrypt from "bcrypt";
 
 const createUserIntoDB = async (payLoad: IUser) => {
   const { name, email, password, age } = payLoad;
+
+  const hashPassword = await bcrypt.hash(password, 10)
 
   const result = await pool.query(
     `
       INSERT INTO users(name, email, password, age) VALUES($1, $2, $3, $4)
       RETURNING *
       `,
-    [name, email, password, age],
+    [name, email, hashPassword, age],
   );
+  delete result.rows[0].password;
   return result;
 };
 
@@ -51,14 +55,13 @@ const updateUserFromDB = async (payLoad: IUser, id: string) => {
 };
 
 const deleteUserFromDB = async (id: string) => {
-
   const result = await pool.query(
     `
       DELETE FROM users WHERE id=$1
     `,
     [id],
   );
-  return result
+  return result;
 };
 
 export const userService = {
@@ -66,5 +69,5 @@ export const userService = {
   getAllUsersFromBD,
   getUserFromDB,
   updateUserFromDB,
-  deleteUserFromDB
+  deleteUserFromDB,
 };
