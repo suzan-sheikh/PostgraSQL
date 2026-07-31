@@ -20,7 +20,7 @@ const createUser = async (req: Request, res: Response) => {
 };
 
 const getAllUsers = async (req: Request, res: Response) => {
-  console.log('get user', req.user);
+  console.log('get all Controller', req.user);
   try {
     const result = await userService.getAllUsersFromBD();
     res.status(200).json({

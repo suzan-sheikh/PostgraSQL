@@ -2,12 +2,10 @@ import type { NextFunction, Request, Response } from "express";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import config from "../config";
 import { pool } from "../db";
+import type { ROLES } from "../types";
 
-const auth = (...roles: any) => {
+const auth = (...roles: ROLES[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
-
-    console.log(roles);
-
     try {
       // console.log("This is protected route");
 
@@ -22,7 +20,7 @@ const auth = (...roles: any) => {
 
       const decoded = jwt.verify(
         token as string,
-        config.secret as string,        
+        config.secret as string,
       ) as JwtPayload;
       // console.log(decoded);
 
@@ -43,9 +41,17 @@ const auth = (...roles: any) => {
       }
 
       if (!user?.is_active) {
-        res.status(402).json({
+        res.status(403).json({
           success: false,
           message: "Forbidden!!",
+        });
+      }
+
+      if (roles.length && !roles.includes(user.role)) {
+        res.status(403).json({
+          success: false,
+          message:
+            "Forbidden: You do not have permission to access this resource",
         });
       }
 
@@ -54,7 +60,7 @@ const auth = (...roles: any) => {
 
       next();
     } catch (error) {
-      next(error)
+      next(error);
     }
   };
 };
