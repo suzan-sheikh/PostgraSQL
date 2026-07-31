@@ -33,12 +33,13 @@ const loginUserIntoDB = async (payLoad: {
     name: user.name,
     is_active: user.is_active,
     email: user.email,
+    role: user.role,
   };
   const accessToken = jwt.sign(jwtPayload, config.secret as string, {
     expiresIn: "1d",
   });
 
-  return {accessToken};
+  return { accessToken };
 
   //   console.log(user);
   // 1 check if the user exists -> done
