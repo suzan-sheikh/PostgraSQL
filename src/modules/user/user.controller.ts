@@ -1,17 +1,19 @@
 import type { Request, Response } from "express";
 import { userService } from "./user.service";
+import sendResponse from "../../utility/sendResponse";
 
 const createUser = async (req: Request, res: Response) => {
-    
   try {
     const result = await userService.createUserIntoDB(req.body);
-    res.status(201).json({
+    sendResponse(res, {
+      statusCode: 201,
       success: true,
       message: "User Create Successful",
       data: result.rows[0],
     });
   } catch (error: any) {
-    res.status(500).json({
+    sendResponse(res, {
+      statusCode: 500,
       success: false,
       message: error.message,
       error: error,
@@ -20,7 +22,7 @@ const createUser = async (req: Request, res: Response) => {
 };
 
 const getAllUsers = async (req: Request, res: Response) => {
-  console.log('get all Controller', req.user);
+  console.log("get all Controller", req.user);
   try {
     const result = await userService.getAllUsersFromBD();
     res.status(200).json({
