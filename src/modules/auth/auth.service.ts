@@ -10,7 +10,6 @@ const loginUserIntoDB = async (payLoad: {
   email: string;
   password: string;
 }) => {
-
   // Email ও Password নেওয়া
   const { email, password } = payLoad;
 
@@ -68,7 +67,6 @@ const loginUserIntoDB = async (payLoad: {
 // Refresh Token
 // =========================
 const generateRefreshToken = async (token: string) => {
-
   // Token না থাকলে Error
   if (!token) {
     throw new Error("Unauthorize");
@@ -111,7 +109,7 @@ const generateRefreshToken = async (token: string) => {
 
   // নতুন Access Token তৈরি
   const accessToken = jwt.sign(jwtPayload, config.secret as string, {
-    expiresIn: "30d", // সাধারণত 1d রাখা হয়
+    expiresIn: "1d", // সাধারণত 1d রাখা হয়
   });
 
   // নতুন Access Token Return
